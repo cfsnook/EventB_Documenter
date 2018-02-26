@@ -1,10 +1,14 @@
 package ac.soton.eventb.documenter.handler;
 
+import java.io.InputStream;
+
+import org.apache.tools.ant.filters.StringInputStream;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.emf.ecore.EObject;
@@ -13,8 +17,8 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eventb.emf.core.EventBElement;
+//import org.eventb.emf.core.EventBNamed;
 import org.eventb.emf.core.machine.Machine;
-import org.eclipse.core.internal.resources.Project;
 import org.eventb.emf.core.context.Context;
 import org.eventb.emf.persistence.EMFRodinDB;
 import org.rodinp.core.IInternalElement;
@@ -24,6 +28,8 @@ import org.rodinp.core.IRodinProject;
 import org.rodinp.core.RodinCore;
 import org.rodinp.core.RodinDBException;
 import ac.soton.eventb.documenter.DiagramExporter;
+import ac.soton.eventb.documenter.DiagramProperties;
+
 import org.eclipse.core.resources.IFolder;
 import ac.soton.eventb.documenter.DocumentGenerator;
 
@@ -53,8 +59,12 @@ public class DocumentHandler extends AbstractHandler {
 					String destination =  createFolders(sourceFile.getProject());
 					DiagramExporter.exportDiagram(mch, destination);
 					//-----test tex file---------
-					DocumentGenerator.createMachineFile(mch);
+					DocumentGenerator.createFile(mch, 0);
 					//-----test tex file---------
+					
+					//-----test properties file---------
+					//DiagramProperties.exportProperties(mch);
+					//-----test properties file---------
 					
 			   }
 				else if (sourceElement instanceof Context){
@@ -63,28 +73,50 @@ public class DocumentHandler extends AbstractHandler {
 					String destination =  createFolders(sourceFile.getProject());
 					
 					DiagramExporter.exportDiagram(ctx, destination);
+					DocumentGenerator.createFile(ctx, 0);
 				}
 			
 				
-			}else if (obj instanceof Project) {
+			}else if (obj instanceof IProject) {
 				sourceElement = null;
-				IRodinProject rodinProject = RodinCore.valueOf((Project) obj);
-				
+				IRodinProject rodinProject = RodinCore.valueOf((IProject) obj);
+				//-------
+				IFile file = DocumentGenerator.createProjectFile((IProject) obj);
+				String content = "";
+				//--------
 				String destination = createFolders(rodinProject.getProject());
 				try {
+					    //begin document
 						for(IRodinElement child : rodinProject.getChildren()){
 				
 							if(child instanceof IRodinFile ){
 								EventBElement eventBComponent = new EMFRodinDB().loadEventBComponent(((IRodinFile) child).getRoot());
-								if(eventBComponent instanceof Machine || eventBComponent instanceof Context)
+								if(eventBComponent instanceof Machine || eventBComponent instanceof Context){
 									DiagramExporter.exportDiagram(eventBComponent, destination);	
-							}
+									   
+								    String name = DocumentGenerator.createFile(eventBComponent, 1);
+								    content += DocumentGenerator.includeFile(name);
+								  //add created file to the report
+								}//end if machine context
+									
+							}//end if RodinFile
+							
+							
+						}//end for
+						//end document
+						content += DocumentGenerator.endDocument();
+						InputStream input = new StringInputStream(content);
+						try {
+							file.appendContents(input, IResource.FORCE, null);
+						} catch (CoreException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
 						}
 					} catch (RodinDBException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 				}
-					
+				
 			}else return null;
 	
 		} else return null;
