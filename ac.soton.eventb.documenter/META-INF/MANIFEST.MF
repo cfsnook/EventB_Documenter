@@ -14,5 +14,7 @@ Require-Bundle: org.eclipse.ui;bundle-version="3.108.1",
  org.eventb.emf.core;bundle-version="4.2.1",
  org.eventb.core;bundle-version="3.3.0",
  ac.soton.eventb.emf.diagrams.navigator;bundle-version="3.0.0",
- org.apache.ant;bundle-version="1.9.6"
+ org.apache.ant;bundle-version="1.9.6",
+ ac.soton.eventb.classdiagrams;bundle-version="1.0.0",
+ ac.soton.eventb.statemachines;bundle-version="3.2.0"
 Bundle-Vendor: %Bundle-Vendor

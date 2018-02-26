@@ -47,7 +47,7 @@ public class DiagramExporter {
 					//exportDiagram(ext, destination);
 					//-----------------------------------------------------------
 					EventBNamed e= (EventBNamed) ext;
-					diagramName = ((EventBNamed)element).getName() +"." + e.getName();
+					diagramName = ((EventBNamed)element).getName() +"_" + e.getName();
 					ac.soton.eventb.emf.diagrams.Diagram extDiagram = (ac.soton.eventb.emf.diagrams.Diagram) ext;
 				    org.eclipse.gmf.runtime.notation.Diagram diag = getDiagramToOpen(extDiagram);
 					if(diag != null){
