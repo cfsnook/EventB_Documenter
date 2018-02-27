@@ -1,10 +1,15 @@
 package ac.soton.eventb.documenter;
 
+import org.eventb.core.basis.Parameter;
 import org.eventb.emf.core.AbstractExtension;
 import org.eventb.emf.core.EventBElement;
 import org.eventb.emf.core.EventBNamed;
 import org.eventb.emf.core.context.Context;
+import org.eventb.emf.core.machine.Action;
+import org.eventb.emf.core.machine.Guard;
+import org.eventb.emf.core.machine.Invariant;
 import org.eventb.emf.core.machine.Machine;
+import org.eventb.emf.core.machine.Witness;
 
 import ac.soton.eventb.classdiagrams.Association;
 import ac.soton.eventb.classdiagrams.Class;
@@ -12,7 +17,11 @@ import ac.soton.eventb.classdiagrams.ClassAttribute;
 import ac.soton.eventb.classdiagrams.ClassConstraint;
 import ac.soton.eventb.classdiagrams.ClassMethod;
 import ac.soton.eventb.classdiagrams.Classdiagram;
+import ac.soton.eventb.emf.core.extension.coreextension.TypedParameter;
+import ac.soton.eventb.statemachines.AbstractNode;
+import ac.soton.eventb.statemachines.State;
 import ac.soton.eventb.statemachines.Statemachine;
+import ac.soton.eventb.statemachines.Transition;
 
 public class DiagramProperties {
 	public static String exportProperties (EventBElement element){
@@ -29,6 +38,9 @@ public class DiagramProperties {
 				
 				else if(ext instanceof Statemachine){
 					//call a method to get the properties or maybe write directly to the tex file
+					str += addDiagram(((EventBNamed)element).getName(), ((Statemachine) ext).getName());
+					//call a method to get the properties or maybe write directly to the tex file
+					 str += buildStatemachineTable((Statemachine) ext);
 				}
 			}
 		}
@@ -91,7 +103,7 @@ public class DiagramProperties {
 		str += "\\textbf{Assosciation} & \\textbf{Source} & \\textbf{Target}\\\\ \n";
 		str += "\\hline \n";
 		for (Association cdAssosciation : cd.getAssociations()){
-			str += beginEventBCode(cdAssosciation.getName()) + "&" + beginEventBCode(cdAssosciation.getSource().getName()) + "&" + beginEventBCode(cdAssosciation.getSource().getName()) + "\\\\ \n";
+			str += beginEventBCode(cdAssosciation.getName()) + "&" + beginEventBCode(cdAssosciation.getSource().getName()) + "&" + beginEventBCode(cdAssosciation.getTarget().getName()) + "\\\\ \n";
 			
 		}
 		str += "\\hline \n";
@@ -109,7 +121,7 @@ public class DiagramProperties {
 		String str = "";
 		str+= "\\begin{figure}[!htb] \n";
 		str+= "\\centering \n";
-		str+= "\\includegraphics[width=1\\linewidth]{" + figPath + "} \n";
+		str+= "\\includegraphics[width=0.7\\linewidth,keepaspectratio]{" + figPath + "} \n"; 
 		str+= "\\caption{" + diagramName +  " in " +  elementName + "} \n";
 		str+= "\\label{fig:" + figName + "} \n";
 		str+= "\\end{figure} \n";
@@ -118,7 +130,7 @@ public class DiagramProperties {
 	
 	public static String beginEventBCode(String code){
 		String str = "";
-		str += "\\begin{EventBcode} \n" + code +  "\n \\end{EventBcode} \n";
+		str += "\\begin{EventBcode} \n" + code +  "\\end{EventBcode} \n";
 		return str;
 		
 	}
@@ -126,6 +138,139 @@ public class DiagramProperties {
 	public static String addVerb(String content){
 		String str = "";
 		str += "\\verb|"+ content + "|";
+		return str;
+	}
+	
+	public static String buildStatemachineTable(Statemachine sm){
+		
+		String smName = sm.getName();
+		String str = "";
+		
+		//Nodes Properties table
+		str += "\\begin{table}[!htb]  \n";
+		str += "\\centering \n";
+		str += "\\begin{tabular}{|p{2cm}||p{2cm}|p{2cm}|p{2cm}|p{3cm}|} \n";
+		str += "\\hline \n";
+		str += "\\textbf{State} & \\textbf{Invariants} & \\textbf{Entry Actions} & \\textbf{Exit Actions} & \\textbf{Statemachines}\\\\ \n";
+		str += "\\hline \n";
+		
+		for (AbstractNode node : sm.getNodes()){
+		    if (node instanceof State){
+		    	State state = (State) node;
+		    	str += beginEventBCode(state.getName()) + "&";
+					
+				str += "\\begin{tabular}{l}\n";
+				for(Invariant inv : state.getInvariants()){
+						
+					str += beginEventBCode(inv.getPredicate()) + "\\\\ \n";
+				}
+				str += "\\end{tabular} \n";
+				str += "&";	
+				
+				str += "\\begin{tabular}{l}\n";
+				for(Action entryAct : state.getEntryActions()){
+						
+					str += beginEventBCode(entryAct.getAction()) + "\\\\ \n";
+				}
+				str += "\\end{tabular} \n";
+				str += "&";
+				
+				str += "\\begin{tabular}{l}\n";
+				for(Action exitAct : state.getEntryActions()){
+						
+					str += beginEventBCode(exitAct.getAction()) + "\\\\ \n";
+				}
+				str += "\\end{tabular} \n";
+				str += "&";	
+				
+				str += "\\begin{tabular}{l}\n";
+				for(Statemachine stateM: state.getStatemachines()){
+						
+					str += beginEventBCode(stateM.getName()) + "\\\\ \n";
+				}
+				str += "\\end{tabular} \n";
+				str += "\\\\ \\hline \n";
+					
+		    }// end if state
+          
+		}// end for node
+		
+		str += "\\end{tabular} \n";
+		str += "\\caption{State properties of " + smName+ " statemachine} \n";
+		str += "\\label{tab:State_" + smName + "} \n";
+		str += "\\end{table} \n";
+		
+		//transion source target
+		
+		str += "\\begin{table}[!htb] \n";
+		str += "\\centering \n";
+		str += "\\begin{tabular}{|p{4cm}||p{4cm}|p{4cm}|} \n";
+		str += "\\hline \n";
+		str += "\\textbf{Transition} & \\textbf{Source} & \\textbf{Target}\\\\ \n";
+		str += "\\hline \n";
+		for (Transition transition : sm.getTransitions()){
+			str += beginEventBCode(transition.getLabel()) + "&" + beginEventBCode(transition.getSource().getName()) + "&" + beginEventBCode(transition.getTarget().getName()) + "\\\\ \n";
+			
+		}
+		str += "\\hline \n";
+		str += "\\end{tabular} \n";
+		str += "\\caption{Transition properties of " + smName + " statemachine} \n";
+		str += "\\label{tab:Assosciation_" + smName + "} \n";
+		str += "\\end{table} \n";
+		
+		// transition properties
+		str += "\\begin{table}[!htb]  \n";
+		str += "\\centering \n";
+		str += "\\begin{tabular}{|p{2cm}||p{2cm}|p{2cm}|p{2cm}|p{2cm}|} \n";
+		str += "\\hline \n";
+		str += "\\textbf{Transition} & \\textbf{Parameters} & \\textbf{Witnesses} & \\textbf{Guards} & \\textbf{Actions}\\\\ \n";
+		str += "\\hline \n";
+		for (Transition transition: sm.getTransitions()){
+		    
+		    str += beginEventBCode(transition.getLabel()) + "&";
+					
+			str += "\\begin{tabular}{l}\n";
+			
+			for(TypedParameter par : transition.getParameters()){
+						
+				str += beginEventBCode(par.getName()) + "\\\\ \n";
+			}
+			str += "\\end{tabular} \n";
+			str += "&";	
+			
+			//witnesses
+			str += "\\begin{tabular}{l}\n";
+			
+			for(Witness wit : transition.getWitnesses()){
+						
+				str += beginEventBCode(wit.getPredicate()) + "\\\\ \n";
+			}
+			str += "\\end{tabular} \n";
+			str += "&";	
+			//gurds
+			str += "\\begin{tabular}{l}\n";
+			
+			for(Guard grd : transition.getGuards()){
+						
+				str += beginEventBCode(grd.getPredicate()) + "\\\\ \n";
+			}
+			str += "\\end{tabular} \n";
+			str += "&";	
+			//actions
+            str += "\\begin{tabular}{l}\n";
+			
+			for(Action act : transition.getActions()){
+						
+				str += beginEventBCode(act.getAction()) + "\\\\ \n";
+			}
+			str += "\\end{tabular} \n";
+			str += "\\\\ \\hline \n";
+		}
+		str += "\\end{tabular} \n";
+		str += "\\caption{Transition properties of " + smName+ " statemachine} \n";
+		str += "\\label{tab:tran_" + smName + "} \n";
+		str += "\\end{table} \n";
+		//-----------------------------------------
 		return str;
 	}
 }
