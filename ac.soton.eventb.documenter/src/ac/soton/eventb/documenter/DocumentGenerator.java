@@ -14,38 +14,7 @@ import org.eclipse.core.resources.IResource;
 
 public class DocumentGenerator {
 	final static String documentsFolder = "EventB_Documents";
-//	public static void createMachineFile(Machine machine){
-//		String fileName = machine.getName() + ".tex";
-//		IFolder folder = WorkspaceSynchronizer.getFile(machine.eResource()).getProject().getFolder(documentsFolder);
-//		
-//		//------------------set document content-----------
-//		String str = "";		
-//		str += beginDocument();
-//		str += DiagramProperties.exportProperties(machine);
-//		str += endDocument();
-//		InputStream input = new StringInputStream(str);
-//		
-//		//------------------set document content-----------
-//		
-//		if (folder.exists()){
-//			IFile file = folder.getFile(fileName);
-//			if (file.exists())
-//			try {
-//				file.setContents(input, 0, null);
-//			} catch (CoreException e1) {
-//				// TODO Auto-generated catch block
-//				e1.printStackTrace();
-//			}
-//			else{     
-//				try {
-//					file.create(input,true , null);
-//				} catch (CoreException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//			}
-//		}
-//	}
+
 	public static String createFile(EventBElement element, int level){
 		
 		String name = "";
@@ -155,7 +124,7 @@ public class DocumentGenerator {
 	//begin chapter
 	public static String beginChapter(String title){
 		String str = "";
-		str += "\\chapter{" + title + "} \n" ;        
+		str += "\\chapter{" + replaceUnderscore(title) + "} \n" ;        
 		//str += "\\pagenumbering{arabic} \n";
 		return str;
 		
@@ -166,7 +135,7 @@ public class DocumentGenerator {
 			String str = "";
 			
 			
-			str += "\\section*{" + title + "} \n" ;        
+			str += "\\section*{" + replaceUnderscore(title) + "} \n" ;        
 			
 			return str;
 			
@@ -197,5 +166,9 @@ public class DocumentGenerator {
 	  return str;
 	  
   }
- 
+ public static String replaceUnderscore(String str){
+	// String strReplace = str.replaceAll("_", "-");
+	 String strReplace = str.replace("_", "\\_");
+	 return strReplace;
+ }
 }

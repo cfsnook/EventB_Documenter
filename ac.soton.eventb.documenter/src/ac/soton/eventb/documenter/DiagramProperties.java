@@ -1,6 +1,5 @@
 package ac.soton.eventb.documenter;
 
-import org.eventb.core.basis.Parameter;
 import org.eventb.emf.core.AbstractExtension;
 import org.eventb.emf.core.EventBElement;
 import org.eventb.emf.core.EventBNamed;
@@ -32,6 +31,7 @@ public class DiagramProperties {
 					
 					str += addDiagram(((EventBNamed)element).getName(), ((Classdiagram) ext).getName());
 					//call a method to get the properties or maybe write directly to the tex file
+					
 					 str += buildClassdiagramTable((Classdiagram) ext);
 										
 				}
@@ -52,7 +52,11 @@ public class DiagramProperties {
 	 * @return
 	 */
 	public static String buildClassdiagramTable(Classdiagram cd){
+		 
+		
 		String str = "";
+		str+= addComment("Class Diagram Property table for: " + cd.getName());
+		
 		str += "\\begin{table}[!htb]  \n";
 		str += "\\centering \n";
 		str += "\\begin{tabular}{|p{2cm}||p{5cm}|p{3cm}|p{2cm}|} \n";
@@ -63,9 +67,9 @@ public class DiagramProperties {
 		// Class Properties
 		// used eventbcode and nort verb for table contents in case greater than column width
 		for (Class cdClass : cd.getClasses()){
-			str += beginEventBCode(cdClass.getName()) + "&";
+			str += DocumentGenerator.replaceUnderscore(cdClass.getName()) + "&";
 			
-			str += "\\begin{tabular}{l}\n";
+			str += "\\begin{tabular}{@{}p{5cm}@{}}\n";
 			for(ClassConstraint constraint : cdClass.getConstraints()){
 				
 				str += beginEventBCode(constraint.getPredicate()) + "\\\\ \n";
@@ -73,16 +77,16 @@ public class DiagramProperties {
 			str += "\\end{tabular} \n";
 			str += "&";	
 			
-			str += "\\begin{tabular}{l} \n";
+			str += "\\begin{tabular}{@{}p{3cm}@{}l} \n";
 			for(ClassMethod method : cdClass.getMethods()){
-				str += beginEventBCode(method.getLabel())+ "\\\\ \n";
+				str += DocumentGenerator.replaceUnderscore(method.getLabel())+ "\\\\ \n";
 			}
 			str += "\\end{tabular} \n";
 			str += "&";
 			
-			str += "\\begin{tabular}{l} \n";
+			str += "\\begin{tabular}{@{}p{2cm}@{}} \n";
 			for(ClassAttribute attribute : cdClass.getClassAttributes()){
-				str += beginEventBCode(attribute.getName())+ "\\\\ \n";
+				str += DocumentGenerator.replaceUnderscore(attribute.getName())+ "\\\\ \n";
 			}
 			str += "\\end{tabular} \n";
 			
@@ -90,12 +94,14 @@ public class DiagramProperties {
 		}
 		
 		str += "\\end{tabular} \n";
-		str += "\\caption{Class properties of " + cd.getName() + " classdiagram} \n";
+		str += "\\caption{Class properties of " + DocumentGenerator.replaceUnderscore(cd.getName()) + " classdiagram} \n";
 		str += "\\label{tab:Class_" + cd.getName() + "} \n";
 		str += "\\end{table} \n";
 		
 		
 		// assosciation properties
+		str+= addComment("Class Diagram Assosciation Property table for: " + cd.getName());
+		
 		str += "\\begin{table}[!htb] \n";
 		str += "\\centering \n";
 		str += "\\begin{tabular}{|p{4cm}||p{4cm}|p{4cm}|} \n";
@@ -103,12 +109,12 @@ public class DiagramProperties {
 		str += "\\textbf{Assosciation} & \\textbf{Source} & \\textbf{Target}\\\\ \n";
 		str += "\\hline \n";
 		for (Association cdAssosciation : cd.getAssociations()){
-			str += beginEventBCode(cdAssosciation.getName()) + "&" + beginEventBCode(cdAssosciation.getSource().getName()) + "&" + beginEventBCode(cdAssosciation.getTarget().getName()) + "\\\\ \n";
+			str += DocumentGenerator.replaceUnderscore(cdAssosciation.getName()) + "&" + DocumentGenerator.replaceUnderscore(cdAssosciation.getSource().getName()) + "&" + DocumentGenerator.replaceUnderscore(cdAssosciation.getTarget().getName()) + "\\\\ \n";
 			
 		}
 		str += "\\hline \n";
 		str += "\\end{tabular} \n";
-		str += "\\caption{Association properties of " + cd.getName() + " classdiagram} \n";
+		str += "\\caption{Association properties of " + DocumentGenerator.replaceUnderscore(cd.getName()) + " classdiagram} \n";
 		str += "\\label{tab:Assosciation_" + cd.getName() + "} \n";
 		str += "\\end{table} \n";
 		
@@ -119,10 +125,11 @@ public class DiagramProperties {
 		String figName = elementName +"_" + diagramName;
 		String figPath = "Figures/" + figName;
 		String str = "";
+		str+= addComment("Figure: " + diagramName);
 		str+= "\\begin{figure}[!htb] \n";
 		str+= "\\centering \n";
-		str+= "\\includegraphics[width=0.7\\linewidth,keepaspectratio]{" + figPath + "} \n"; 
-		str+= "\\caption{" + diagramName +  " in " +  elementName + "} \n";
+		str+= "\\includegraphics[width=0.8\\linewidth,keepaspectratio]{" + figPath + "} \n"; 
+		str+= "\\caption{" + DocumentGenerator.replaceUnderscore(diagramName) +  " in " +  DocumentGenerator.replaceUnderscore(elementName) + "} \n";
 		str+= "\\label{fig:" + figName + "} \n";
 		str+= "\\end{figure} \n";
 		return str;
@@ -147,9 +154,11 @@ public class DiagramProperties {
 		String str = "";
 		
 		//Nodes Properties table
+		str+= addComment("State Property table for statemachine: " + sm.getName());
+		
 		str += "\\begin{table}[!htb]  \n";
 		str += "\\centering \n";
-		str += "\\begin{tabular}{|p{2cm}||p{2cm}|p{2cm}|p{2cm}|p{3cm}|} \n";
+		str += "\\begin{tabular}{|p{2cm}||p{3cm}|p{2cm}|p{2cm}|p{3cm}|} \n";
 		str += "\\hline \n";
 		str += "\\textbf{State} & \\textbf{Invariants} & \\textbf{Entry Actions} & \\textbf{Exit Actions} & \\textbf{Statemachines}\\\\ \n";
 		str += "\\hline \n";
@@ -157,9 +166,9 @@ public class DiagramProperties {
 		for (AbstractNode node : sm.getNodes()){
 		    if (node instanceof State){
 		    	State state = (State) node;
-		    	str += beginEventBCode(state.getName()) + "&";
+		    	str += DocumentGenerator.replaceUnderscore(state.getName()) + "&";
 					
-				str += "\\begin{tabular}{l}\n";
+				str += "\\begin{tabular}{@{}p{3cm}@{}}\n";
 				for(Invariant inv : state.getInvariants()){
 						
 					str += beginEventBCode(inv.getPredicate()) + "\\\\ \n";
@@ -167,7 +176,7 @@ public class DiagramProperties {
 				str += "\\end{tabular} \n";
 				str += "&";	
 				
-				str += "\\begin{tabular}{l}\n";
+				str += "\\begin{tabular}{@{}p{2cm}@{}}\n";
 				for(Action entryAct : state.getEntryActions()){
 						
 					str += beginEventBCode(entryAct.getAction()) + "\\\\ \n";
@@ -175,7 +184,7 @@ public class DiagramProperties {
 				str += "\\end{tabular} \n";
 				str += "&";
 				
-				str += "\\begin{tabular}{l}\n";
+				str += "\\begin{tabular}{@{}p{5cm}@{}}\n";
 				for(Action exitAct : state.getEntryActions()){
 						
 					str += beginEventBCode(exitAct.getAction()) + "\\\\ \n";
@@ -183,10 +192,10 @@ public class DiagramProperties {
 				str += "\\end{tabular} \n";
 				str += "&";	
 				
-				str += "\\begin{tabular}{l}\n";
+				str += "\\begin{tabular}{@{}p{3cm}@{}}\n";
 				for(Statemachine stateM: state.getStatemachines()){
 						
-					str += beginEventBCode(stateM.getName()) + "\\\\ \n";
+					str += DocumentGenerator.replaceUnderscore(stateM.getName()) + "\\\\ \n";
 				}
 				str += "\\end{tabular} \n";
 				str += "\\\\ \\hline \n";
@@ -196,11 +205,12 @@ public class DiagramProperties {
 		}// end for node
 		
 		str += "\\end{tabular} \n";
-		str += "\\caption{State properties of " + smName+ " statemachine} \n";
+		str += "\\caption{State properties of " + DocumentGenerator.replaceUnderscore(smName)+ " statemachine} \n";
 		str += "\\label{tab:State_" + smName + "} \n";
 		str += "\\end{table} \n";
 		
 		//transion source target
+		str+= addComment("Transision source-target table for statemachine: " + sm.getName());
 		
 		str += "\\begin{table}[!htb] \n";
 		str += "\\centering \n";
@@ -209,37 +219,38 @@ public class DiagramProperties {
 		str += "\\textbf{Transition} & \\textbf{Source} & \\textbf{Target}\\\\ \n";
 		str += "\\hline \n";
 		for (Transition transition : sm.getTransitions()){
-			str += beginEventBCode(transition.getLabel()) + "&" + beginEventBCode(transition.getSource().getName()) + "&" + beginEventBCode(transition.getTarget().getName()) + "\\\\ \n";
+			str += DocumentGenerator.replaceUnderscore(transition.getLabel()) + "&" + DocumentGenerator.replaceUnderscore(transition.getSource().getName()) + "&" + DocumentGenerator.replaceUnderscore(transition.getTarget().getName()) + "\\\\ \n";
 			
 		}
 		str += "\\hline \n";
 		str += "\\end{tabular} \n";
-		str += "\\caption{Transition properties of " + smName + " statemachine} \n";
+		str += "\\caption{Transition properties of " + DocumentGenerator.replaceUnderscore(smName) + " statemachine} \n";
 		str += "\\label{tab:Assosciation_" + smName + "} \n";
 		str += "\\end{table} \n";
 		
 		// transition properties
+		str+= addComment("Transition Property table for statemachine: " + sm.getName());
 		str += "\\begin{table}[!htb]  \n";
 		str += "\\centering \n";
-		str += "\\begin{tabular}{|p{2cm}||p{2cm}|p{2cm}|p{2cm}|p{2cm}|} \n";
+		str += "\\begin{tabular}{|p{2cm}||p{2cm}|p{2cm}|p{3cm}|p{3cm}|} \n";
 		str += "\\hline \n";
 		str += "\\textbf{Transition} & \\textbf{Parameters} & \\textbf{Witnesses} & \\textbf{Guards} & \\textbf{Actions}\\\\ \n";
 		str += "\\hline \n";
 		for (Transition transition: sm.getTransitions()){
 		    
-		    str += beginEventBCode(transition.getLabel()) + "&";
+		    str += DocumentGenerator.replaceUnderscore(transition.getLabel()) + "&";
 					
-			str += "\\begin{tabular}{l}\n";
+			str += "\\begin{tabular}{@{}p{2cm}@{}}\n";
 			
 			for(TypedParameter par : transition.getParameters()){
 						
-				str += beginEventBCode(par.getName()) + "\\\\ \n";
+				str += DocumentGenerator.replaceUnderscore(par.getName()) + "\\\\ \n";
 			}
 			str += "\\end{tabular} \n";
 			str += "&";	
 			
 			//witnesses
-			str += "\\begin{tabular}{l}\n";
+			str += "\\begin{tabular}{@{}p{2cm}@{}}\n";
 			
 			for(Witness wit : transition.getWitnesses()){
 						
@@ -248,7 +259,7 @@ public class DiagramProperties {
 			str += "\\end{tabular} \n";
 			str += "&";	
 			//gurds
-			str += "\\begin{tabular}{l}\n";
+			str += "\\begin{tabular}{@{}p{3cm}@{}}\n";
 			
 			for(Guard grd : transition.getGuards()){
 						
@@ -257,7 +268,7 @@ public class DiagramProperties {
 			str += "\\end{tabular} \n";
 			str += "&";	
 			//actions
-            str += "\\begin{tabular}{l}\n";
+            str += "\\begin{tabular}{@{}p{3cm}@{}}\n";
 			
 			for(Action act : transition.getActions()){
 						
@@ -267,10 +278,20 @@ public class DiagramProperties {
 			str += "\\\\ \\hline \n";
 		}
 		str += "\\end{tabular} \n";
-		str += "\\caption{Transition properties of " + smName+ " statemachine} \n";
+		str += "\\caption{Transition properties of " + DocumentGenerator.replaceUnderscore(smName)+ " statemachine} \n";
 		str += "\\label{tab:tran_" + smName + "} \n";
 		str += "\\end{table} \n";
 		//-----------------------------------------
+		return str;
+	}
+	
+	public static String addComment(String description){
+		String str = "";
+		//str += "\\newline";
+		str += "%----------------------------------------------------------\n";
+		str += "%" + description + "\n";
+		str += "%----------------------------------------------------------\n";
+		
 		return str;
 	}
 }
