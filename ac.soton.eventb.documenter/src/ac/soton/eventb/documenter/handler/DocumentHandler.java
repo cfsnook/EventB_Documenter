@@ -17,7 +17,6 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eventb.emf.core.EventBElement;
-//import org.eventb.emf.core.EventBNamed;
 import org.eventb.emf.core.machine.Machine;
 import org.eventb.emf.core.context.Context;
 import org.eventb.emf.persistence.EMFRodinDB;
@@ -28,7 +27,6 @@ import org.rodinp.core.IRodinProject;
 import org.rodinp.core.RodinCore;
 import org.rodinp.core.RodinDBException;
 import ac.soton.eventb.documenter.DiagramExporter;
-import ac.soton.eventb.documenter.DiagramProperties;
 
 import org.eclipse.core.resources.IFolder;
 import ac.soton.eventb.documenter.DocumentGenerator;
@@ -109,8 +107,7 @@ public class DocumentHandler extends AbstractHandler {
 						try {
 							file.appendContents(input, IResource.FORCE, null);
 						} catch (CoreException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+							throw new RuntimeException("Could not update file " +  file.getName(), e);
 						}
 					} catch (RodinDBException e) {
 						// TODO Auto-generated catch block
@@ -134,16 +131,14 @@ public class DocumentHandler extends AbstractHandler {
 					if (!folderFigures.exists())
 						folderFigures.create(false, true, null);
 			} catch (CoreException e) {
-				// TODO Auto-generated catch block 
-				e.printStackTrace();
+				throw new RuntimeException("Could not create folder.", e);
 			}
 		folderFigures = folderDocs.getFolder(figuresFolder);
 		if (!folderFigures.exists())
 			try {
 					folderFigures.create(false, true, null);
 			} catch (CoreException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new RuntimeException("Could not create figures folder.", e);
 			}
 		IPath loc = folderFigures.getLocation().addTrailingSeparator();
 		destination = loc.toOSString();

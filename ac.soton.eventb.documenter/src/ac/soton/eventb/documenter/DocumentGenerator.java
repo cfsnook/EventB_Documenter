@@ -39,15 +39,14 @@ public class DocumentGenerator {
 				//file.setContents(input, 0, null);
 				file.setContents(input, IResource.FORCE, null);
 			} catch (CoreException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+			
+				throw new RuntimeException("Could not update file: " + fileName, e1);
 			}
 			else{     
 				try {
 					file.create(input,true , null);
 				} catch (CoreException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					throw new RuntimeException("Could not create file: " + fileName, e);
 				}
 			}
 		}
@@ -67,25 +66,35 @@ public class DocumentGenerator {
 		
 		//------------------set document content-----------
 		
-		if (folder.exists()){
+		if (folder.exists())
 			file = folder.getFile(fileName);
-			if (file.exists())
+		else
+			try {
+				folder.create(true, true, null);
+			} catch (CoreException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+		
+		if (file.exists())
 			try {
 				//file.setContents(input, 0, null);
 				file.setContents(input, IResource.FORCE, null);
 			} catch (CoreException e1) {
 				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				//e1.printStackTrace();
+				throw new RuntimeException("Could not update file: " + fileName, e1);
 			}
 			else{     
 				try {
 					file.create(input,true , null);
 				} catch (CoreException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					//e.printStackTrace();
+					throw new RuntimeException("Could not create file: " + fileName, e);
 				}
 			}
-		}
+		
 		return file;
 	}
 	// set document class, title, date, table of contents, page numbering

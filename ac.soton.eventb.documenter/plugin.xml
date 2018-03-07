@@ -48,7 +48,6 @@
       </category>
       <command
             categoryId="ac.soton.eventb.documenter.commands"
-            defaultHandler="ac.soton.eventb.documenter.handler.DocumentHandler"
             description="Generate Event-B Documents"        
              id="ac.soton.eventb.documenter.commands.generateDocument"
             name="Generate Event-B Document">
