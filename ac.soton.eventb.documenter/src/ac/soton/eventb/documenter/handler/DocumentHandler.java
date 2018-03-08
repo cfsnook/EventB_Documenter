@@ -30,6 +30,7 @@ import ac.soton.eventb.documenter.DiagramExporter;
 
 import org.eclipse.core.resources.IFolder;
 import ac.soton.eventb.documenter.DocumentGenerator;
+import ac.soton.eventb.documenter.StyleFile;
 
 public class DocumentHandler extends AbstractHandler {
 	
@@ -78,11 +79,12 @@ public class DocumentHandler extends AbstractHandler {
 			}else if (obj instanceof IProject) {
 				sourceElement = null;
 				IRodinProject rodinProject = RodinCore.valueOf((IProject) obj);
+				
+				String destination = createFolders(rodinProject.getProject());
 				//-------
 				IFile file = DocumentGenerator.createProjectFile((IProject) obj);
 				String content = "";
 				//--------
-				String destination = createFolders(rodinProject.getProject());
 				try {
 					    //begin document
 						for(IRodinElement child : rodinProject.getChildren()){
@@ -127,6 +129,9 @@ public class DocumentHandler extends AbstractHandler {
         if (!folderDocs.exists())
         	try {
         			folderDocs.create(true, true, null);
+        			//----
+        			StyleFile.createStyleFile(proj);
+        			//-----
 					folderFigures = folderDocs.getFolder(figuresFolder);
 					if (!folderFigures.exists())
 						folderFigures.create(false, true, null);

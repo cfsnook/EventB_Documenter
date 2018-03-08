@@ -21,9 +21,14 @@ public class DocumentGenerator {
 		
 		if(element instanceof EventBNamed)
 			name = ((EventBNamed)element).getName() ;
-		
-		String fileName = name + ".tex";
-		
+		//---------------
+		// The different names to fix the problem if the report was generated from project or machine/context level
+		String fileName = "";
+		if (level < 1)
+			fileName = name + "_level0.tex";
+		else
+			fileName = name + ".tex";
+		//--------------
 		IFolder folder = WorkspaceSynchronizer.getFile(element.eResource()).getProject().getFolder(documentsFolder);
 		
 		//------------------set document content-----------
@@ -60,22 +65,21 @@ public class DocumentGenerator {
 		
 		IFolder folder =proj.getFolder(documentsFolder);
 		
-		//------------------set document content-----------
-		String content = beginDocument();
-		InputStream input = new StringInputStream(content);
 		
-		//------------------set document content-----------
-		
-		if (folder.exists())
-			file = folder.getFile(fileName);
-		else
+			
+		if (!folder.exists())
 			try {
 				folder.create(true, true, null);
 			} catch (CoreException e2) {
 				// TODO Auto-generated catch block
 				e2.printStackTrace();
 			}
-		
+		//------------------set document content-----------
+		file = folder.getFile(fileName);
+		String content = beginDocument();
+		InputStream input = new StringInputStream(content);
+				
+		//------------------set document content-----------
 		if (file.exists())
 			try {
 				//file.setContents(input, 0, null);
