@@ -25,20 +25,21 @@ public class DocumentGenerator {
 		// The different names to fix the problem if the report was generated from project or machine/context level
 		String fileName = "";
 		if (level < 1)
-			fileName = name + "_level0.tex";
+			fileName = name + "_section.tex";
 		else
 			fileName = name + ".tex";
 		//--------------
 		IFolder folder = WorkspaceSynchronizer.getFile(element.eResource()).getProject().getFolder(documentsFolder);
 		
-		//------------------set document content-----------
-	    String content = setContent(element, level);
-		InputStream input = new StringInputStream(content);
 		
-		//------------------set document content-----------
 		
 		if (folder.exists()){
 			IFile file = folder.getFile(fileName);
+			//------------------set document content-----------
+		    String content = setContent(element, level);
+			InputStream input = new StringInputStream(content);
+			
+			//------------------set document content-----------
 			if (file.exists())
 			try {
 				//file.setContents(input, 0, null);
@@ -65,40 +66,30 @@ public class DocumentGenerator {
 		
 		IFolder folder =proj.getFolder(documentsFolder);
 		
-		
+		if (folder.exists()){
 			
-		if (!folder.exists())
-			try {
-				folder.create(true, true, null);
-			} catch (CoreException e2) {
-				// TODO Auto-generated catch block
-				e2.printStackTrace();
-			}
-		//------------------set document content-----------
-		file = folder.getFile(fileName);
-		String content = beginDocument();
-		InputStream input = new StringInputStream(content);
-				
-		//------------------set document content-----------
-		if (file.exists())
-			try {
-				//file.setContents(input, 0, null);
-				file.setContents(input, IResource.FORCE, null);
-			} catch (CoreException e1) {
-				// TODO Auto-generated catch block
-				//e1.printStackTrace();
-				throw new RuntimeException("Could not update file: " + fileName, e1);
-			}
-			else{     
-				try {
-					file.create(input,true , null);
-				} catch (CoreException e) {
-					// TODO Auto-generated catch block
-					//e.printStackTrace();
-					throw new RuntimeException("Could not create file: " + fileName, e);
-				}
-			}
 		
+		//------------------set document content-----------
+			file = folder.getFile(fileName);
+			String content = beginDocument();
+			InputStream input = new StringInputStream(content);
+					
+			//------------------set document content-----------
+			if (file.exists())
+				try {
+					
+					file.setContents(input, IResource.FORCE, null);
+				} catch (CoreException e1) {
+					throw new RuntimeException("Could not update file: " + fileName, e1);
+				}
+				else{     
+					try {
+						file.create(input,true , null);
+					} catch (CoreException e) {
+						throw new RuntimeException("Could not create file: " + fileName, e);
+					}
+				}
+		}
 		return file;
 	}
 	// set document class, title, date, table of contents, page numbering

@@ -10,7 +10,8 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 
 public class StyleFile {
-
+	final static String fileName = "lstEventB.sty";
+	
 	public static String setContent(){
 		String str = "";
 		str += "%%\n"+
@@ -239,26 +240,19 @@ public class StyleFile {
 	
 	public static void createStyleFile(IProject proj){
 	//----------------------
-		String fileName = "lstEventB.sty";
+		
 		IFolder folder = proj.getFolder("EventB_Documents");
 		
-	
-		
-		//------------------set document content-----------
-	    String content = setContent();
-		InputStream input = new StringInputStream(content);
-		
-		//------------------set document content-----------
-		
-	
+
 			IFile file = folder.getFile(fileName);
+			//set document content
+		    String content = setContent();
+			InputStream input = new StringInputStream(content);
 			
-				//file.setContents(input, 0, null);
 		    try {
 		    	file.create(input, IResource.FORCE, null);
 			} catch (CoreException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				throw new RuntimeException("Could not create " + fileName, e);
 			}
 			
     //--------------------

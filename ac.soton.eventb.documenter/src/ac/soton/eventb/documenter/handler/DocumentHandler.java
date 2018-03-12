@@ -57,13 +57,9 @@ public class DocumentHandler extends AbstractHandler {
 					
 					String destination =  createFolders(sourceFile.getProject());
 					DiagramExporter.exportDiagram(mch, destination);
-					//-----test tex file---------
-					DocumentGenerator.createFile(mch, 0);
-					//-----test tex file---------
 					
-					//-----test properties file---------
-					//DiagramProperties.exportProperties(mch);
-					//-----test properties file---------
+					DocumentGenerator.createFile(mch, 0);
+					
 					
 			   }
 				else if (sourceElement instanceof Context){
@@ -81,10 +77,10 @@ public class DocumentHandler extends AbstractHandler {
 				IRodinProject rodinProject = RodinCore.valueOf((IProject) obj);
 				
 				String destination = createFolders(rodinProject.getProject());
-				//-------
+				
 				IFile file = DocumentGenerator.createProjectFile((IProject) obj);
 				String content = "";
-				//--------
+				
 				try {
 					    //begin document
 						for(IRodinElement child : rodinProject.getChildren()){
@@ -126,25 +122,32 @@ public class DocumentHandler extends AbstractHandler {
 		String destination = "";
 		IFolder folderDocs = proj.getFolder(documentsFolder);
 		IFolder folderFigures=null;
-        if (!folderDocs.exists())
-        	try {
-        			folderDocs.create(true, true, null);
-        			//----
-        			StyleFile.createStyleFile(proj);
-        			//-----
-					folderFigures = folderDocs.getFolder(figuresFolder);
-					if (!folderFigures.exists())
+		
+		if(folderDocs.exists()){
+			folderFigures = folderDocs.getFolder(figuresFolder);
+			if (!folderFigures.exists())
+				try {
 						folderFigures.create(false, true, null);
-			} catch (CoreException e) {
-				throw new RuntimeException("Could not create folder.", e);
+				} catch (CoreException e) {
+					throw new RuntimeException("Could not create figures folder.", e);
 			}
-		folderFigures = folderDocs.getFolder(figuresFolder);
-		if (!folderFigures.exists())
+			IFile file = folderDocs.getFile("lstEventB.sty");
+			if (!file.exists())
+				StyleFile.createStyleFile(proj);
+		}
+		else{
 			try {
-					folderFigures.create(false, true, null);
+    			folderDocs.create(true, true, null);
+    			
+    			StyleFile.createStyleFile(proj);
+    			
+				folderFigures = folderDocs.getFolder(figuresFolder);
+				folderFigures.create(false, true, null);
 			} catch (CoreException e) {
-				throw new RuntimeException("Could not create figures folder.", e);
-			}
+			throw new RuntimeException("Could not create documents folder.", e);
+		}
+		}
+      
 		IPath loc = folderFigures.getLocation().addTrailingSeparator();
 		destination = loc.toOSString();
 			

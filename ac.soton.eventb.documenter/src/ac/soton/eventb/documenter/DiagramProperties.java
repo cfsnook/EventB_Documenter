@@ -287,7 +287,8 @@ public class DiagramProperties {
 	
 	public static String addComment(String description){
 		String str = "";
-		//str += "\\newline";
+		
+		str += "\n";
 		str += "%----------------------------------------------------------\n";
 		str += "%" + description + "\n";
 		str += "%----------------------------------------------------------\n";
