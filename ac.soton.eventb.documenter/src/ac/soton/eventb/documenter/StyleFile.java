@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2017-2018 University of Southampton.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     University of Southampton - initial API and implementation
+ *******************************************************************************/
 package ac.soton.eventb.documenter;
 
 import java.io.InputStream;
@@ -8,7 +18,14 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
-
+/**
+ * <p>
+ * generates lstEventB style file.
+ * </p>
+ * @author dd4g12
+ * @version 0.0.1
+ * @since 0.0.1
+ */
 public class StyleFile {
 	final static String fileName = "lstEventB.sty";
 	

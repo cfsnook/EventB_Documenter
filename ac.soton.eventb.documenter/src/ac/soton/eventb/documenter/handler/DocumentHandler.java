@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2017-2018 University of Southampton.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     University of Southampton - initial API and implementation
+ *******************************************************************************/
 package ac.soton.eventb.documenter.handler;
 
 import java.io.InputStream;
@@ -31,7 +41,14 @@ import ac.soton.eventb.documenter.DiagramExporter;
 import org.eclipse.core.resources.IFolder;
 import ac.soton.eventb.documenter.DocumentGenerator;
 import ac.soton.eventb.documenter.StyleFile;
-
+/**
+ * <p>
+ * Handler for iUML-B document generator. Command can be executed from machine, context or project
+ * </p>
+ * @author dd4g12
+ * @version 0.0.1
+ * @since 0.0.1
+ */
 public class DocumentHandler extends AbstractHandler {
 	
 	final String documentsFolder = "EventB_Documents";
