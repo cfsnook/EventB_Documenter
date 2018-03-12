@@ -6,11 +6,11 @@
           <menuContribution
             locationURI="popup:fr.systerel.explorer.navigator.view">
              <menu
-               id="ac.soton.eventb.documenter.menu"
+               id="ac.soton.eventb.documentor.menu"
                label="Document Generator"
                tooltip="Document Generator Menu">
          <command
-               commandId="ac.soton.eventb.documenter.commands.generateDocument"
+               commandId="ac.soton.eventb.documentor.commands.generateDocument"
                label = "Generate Document"
                style="push"
                tooltip="Generate Event-B Document" > 
@@ -43,21 +43,21 @@
          point="org.eclipse.ui.commands">    
       <category
         description="Commands associated with document generation"
-        id="ac.soton.eventb.documenter.commands"
+        id="ac.soton.eventb.documentor.commands"
         name="Document Generator Commands">
       </category>
       <command
-            categoryId="ac.soton.eventb.documenter.commands"
+            categoryId="ac.soton.eventb.documentor.commands"
             description="Generate Event-B Documents"        
-             id="ac.soton.eventb.documenter.commands.generateDocument"
+             id="ac.soton.eventb.documentor.commands.generateDocument"
             name="Generate Event-B Document">
       </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
          <handler
-			  commandId="ac.soton.eventb.documenter.commands.generateDocument"
-			  class="ac.soton.eventb.documenter.handler.DocumentHandler">
+			  commandId="ac.soton.eventb.documentor.commands.generateDocument"
+			  class="ac.soton.eventb.documentor.handler.DocumentHandler">
 			 </handler>
    </extension>
      

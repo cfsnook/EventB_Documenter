@@ -9,7 +9,7 @@
  *     University of Southampton - initial API and implementation
  *******************************************************************************/
 
-package ac.soton.eventb.documenter;
+package ac.soton.eventb.documentor;
 
 import java.io.InputStream;
 

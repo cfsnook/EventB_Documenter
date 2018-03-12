@@ -8,7 +8,7 @@
  * Contributors:
  *     University of Southampton - initial API and implementation
  *******************************************************************************/
-package ac.soton.eventb.documenter.handler;
+package ac.soton.eventb.documentor.handler;
 
 import java.io.InputStream;
 
@@ -36,11 +36,12 @@ import org.rodinp.core.IRodinFile;
 import org.rodinp.core.IRodinProject;
 import org.rodinp.core.RodinCore;
 import org.rodinp.core.RodinDBException;
-import ac.soton.eventb.documenter.DiagramExporter;
+
+import ac.soton.eventb.documentor.DiagramExporter;
+import ac.soton.eventb.documentor.DocumentGenerator;
+import ac.soton.eventb.documentor.StyleFile;
 
 import org.eclipse.core.resources.IFolder;
-import ac.soton.eventb.documenter.DocumentGenerator;
-import ac.soton.eventb.documenter.StyleFile;
 /**
  * <p>
  * Handler for iUML-B document generator. Command can be executed from machine, context or project

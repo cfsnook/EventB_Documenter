@@ -8,7 +8,7 @@
  * Contributors:
  *     University of Southampton - initial API and implementation
  *******************************************************************************/
-package ac.soton.eventb.documenter;
+package ac.soton.eventb.documentor;
 
 import org.eventb.emf.core.AbstractExtension;
 import org.eventb.emf.core.EventBElement;
