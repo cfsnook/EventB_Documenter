@@ -194,4 +194,35 @@ public class DocumentGenerator {
 	 String strReplace = str.replace("_", "\\_");
 	 return strReplace;
  }
+
+ //ToDo: Better refactoring for creating files
+ public static void createProofStatFile(String content, IProject proj) {
+	//------------------set document content-----------
+		
+				
+		//------------------set document content-----------
+	IFolder folder =proj.getFolder(documentsFolder);
+		
+		if (folder.exists()){
+			IFile file = folder.getFile("proofStatistics.tex");
+			String chContent = beginChapter("Proof Statistics");
+			chContent += content;
+			InputStream input = new StringInputStream(chContent);
+			if (file.exists())
+			try {
+				
+					file.setContents(input, IResource.FORCE, null);
+			} catch (CoreException e1) {
+				throw new RuntimeException("Could not update file: proofStatistics.tex" , e1);
+			}
+			else{     
+				try {
+					file.create(input,true , null);
+				} catch (CoreException e) {
+					throw new RuntimeException("Could not create file: proofStatistics.tex" , e);
+				}
+			}
+		}
+ 	}
+ 
 }
