@@ -31,7 +31,7 @@ import org.eventb.core.IPSStatus;
 
 /**
  * <p>
- * Proof Statistics
+ * Generate latex Proof Statistics table for a project
  * </p>
  * @author dd4g12
  * @version 1.0.0
@@ -39,18 +39,6 @@ import org.eventb.core.IPSStatus;
  */
 
 public class ProofStatisticsExporter {
-	
-//	public static void generateStatistics(Object element) {
-//		Statistics st = new Statistics(element);
-//		
-//		System.out.println("element string: " + element.toString());
-//		System.out.println("Manual: "  + st.getManual());
-//		System.out.println("Total: " + st.getTotal());
-//		System.out.println("Auto: " + st.getAuto());
-//		System.out.println("class: " + st.getClass());
-//		
-//		
-//	}
 	
 	public static String generateStatistics(List <IModelElement> elements, String projName) {
 		String str = "";

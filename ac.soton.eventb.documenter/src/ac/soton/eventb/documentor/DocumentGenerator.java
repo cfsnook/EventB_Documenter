@@ -26,6 +26,7 @@ import org.eclipse.core.resources.IResource;
 /**
  * <p>
  * Latex document generator for iUML-B
+ * include methods to generate latex files and their content
  * </p>
  * @author dd4g12
  * @version 1.0.0
@@ -34,83 +35,28 @@ import org.eclipse.core.resources.IResource;
 public class DocumentGenerator {
 	final static String documentsFolder = "EventB_Documents";
 
-	public static String createFile(EventBElement element, int level){
+	public static String createElemFile(EventBElement element, int level){
 		
 		String name = "";
 		
 		if(element instanceof EventBNamed)
 			name = ((EventBNamed)element).getName() ;
-		//---------------
+		
 		// The different names to fix the problem if the report was generated from project or machine/context level
 		String fileName = "";
 		if (level < 1)
 			fileName = name + "_section.tex";
 		else
 			fileName = name + ".tex";
-		//--------------
-		IFolder folder = WorkspaceSynchronizer.getFile(element.eResource()).getProject().getFolder(documentsFolder);
+
+		IProject proj= WorkspaceSynchronizer.getFile(element.eResource()).getProject();
+	    String content = setContent(element, level);
+	   
+		generateFile(fileName,proj, content);
 		
-		
-		
-		if (folder.exists()){
-			IFile file = folder.getFile(fileName);
-			//------------------set document content-----------
-		    String content = setContent(element, level);
-			InputStream input = new StringInputStream(content);
-			
-			//------------------set document content-----------
-			if (file.exists())
-			try {
-				//file.setContents(input, 0, null);
-				file.setContents(input, IResource.FORCE, null);
-			} catch (CoreException e1) {
-			
-				throw new RuntimeException("Could not update file: " + fileName, e1);
-			}
-			else{     
-				try {
-					file.create(input,true , null);
-				} catch (CoreException e) {
-					throw new RuntimeException("Could not create file: " + fileName, e);
-				}
-			}
-		}
 		return name;
 	}
 	
-	public static IFile createProjectFile(IProject proj){
-		IFile file  = null;
-		String fileName = proj.getName() + ".tex";
-			
-		
-		IFolder folder =proj.getFolder(documentsFolder);
-		
-		if (folder.exists()){
-			
-		
-		//------------------set document content-----------
-			file = folder.getFile(fileName);
-			String content = beginDocument();
-			InputStream input = new StringInputStream(content);
-					
-			//------------------set document content-----------
-			if (file.exists())
-				try {
-					
-					file.setContents(input, IResource.FORCE, null);
-				} catch (CoreException e1) {
-					throw new RuntimeException("Could not update file: " + fileName, e1);
-				}
-				else{     
-					try {
-						file.create(input,true , null);
-					} catch (CoreException e) {
-						throw new RuntimeException("Could not create file: " + fileName, e);
-					}
-				}
-		}
-		return file;
-	}
 	// set document class, title, date, table of contents, page numbering
 	public static String beginDocument(){
 		
@@ -190,39 +136,47 @@ public class DocumentGenerator {
 	  
   }
  public static String replaceUnderscore(String str){
-	// String strReplace = str.replaceAll("_", "-");
 	 String strReplace = str.replace("_", "\\_");
 	 return strReplace;
  }
-
- //ToDo: Better refactoring for creating files
- public static void createProofStatFile(String content, IProject proj) {
-	//------------------set document content-----------
-		
-				
-		//------------------set document content-----------
-	IFolder folder =proj.getFolder(documentsFolder);
+ 
+ /**
+  * <p>
+  * generates a file in documentsFolder
+  * fileName should  also include the extension
+  * </p>
+  * @author dd4g12
+  * @version 1.0.0
+  * @since 1.0.0
+  */
+ public static IFile generateFile(String fileName, IProject proj, String content) {
+	 IFile file  = null;
+	 IFolder folder =proj.getFolder(documentsFolder);
 		
 		if (folder.exists()){
-			IFile file = folder.getFile("proofStatistics.tex");
-			String chContent = beginChapter("Proof Statistics");
-			chContent += content;
-			InputStream input = new StringInputStream(chContent);
+			
+		    //set document content
+			file = folder.getFile(fileName);
+			
+			InputStream input = new StringInputStream(content);
+			
 			if (file.exists())
-			try {
-				
-					file.setContents(input, IResource.FORCE, null);
-			} catch (CoreException e1) {
-				throw new RuntimeException("Could not update file: proofStatistics.tex" , e1);
-			}
-			else{     
 				try {
-					file.create(input,true , null);
-				} catch (CoreException e) {
-					throw new RuntimeException("Could not create file: proofStatistics.tex" , e);
+					
+					file.setContents(input, IResource.FORCE, null);
+				} catch (CoreException e1) {
+					throw new RuntimeException("Could not update file: " + fileName, e1);
 				}
-			}
+				else{     
+					try {
+						file.create(input,true , null);
+					} catch (CoreException e) {
+						throw new RuntimeException("Could not create file: " + fileName, e);
+					}
+				}
 		}
- 	}
- 
+		return file;
+	 
+ }
+
 }

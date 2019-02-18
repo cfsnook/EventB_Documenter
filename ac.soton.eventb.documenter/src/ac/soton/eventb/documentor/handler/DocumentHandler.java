@@ -13,7 +13,6 @@ package ac.soton.eventb.documentor.handler;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.tools.ant.filters.StringInputStream;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -38,7 +37,6 @@ import org.rodinp.core.IRodinFile;
 import org.rodinp.core.IRodinProject;
 import org.rodinp.core.RodinCore;
 import org.rodinp.core.RodinDBException;
-
 import ac.soton.eventb.documentor.DiagramExporter;
 import ac.soton.eventb.documentor.DocumentGenerator;
 import ac.soton.eventb.documentor.ProofStatisticsExporter;
@@ -81,16 +79,8 @@ public class DocumentHandler extends AbstractHandler {
 					String destination =  createFolders(sourceFile.getProject());
 					DiagramExporter.exportDiagram(mch, destination);
 					
-					DocumentGenerator.createFile(mch, 0);
-					
-					//---test statistics
-					//ProofStatisticsExporter.generateStatistics((IProject)obj);
-//					IModelElement element = ModelController.getModelElement((IInternalElement)obj);
-//					ProofStatisticsExporter.generateStatistics(element);
-					//-------------
-					
-					
-					
+					DocumentGenerator.createElemFile(mch, 0);
+										
 			   }
 				else if (sourceElement instanceof Context){
 					Context ctx = (Context) sourceElement;
@@ -98,33 +88,23 @@ public class DocumentHandler extends AbstractHandler {
 					String destination =  createFolders(sourceFile.getProject());
 					
 					DiagramExporter.exportDiagram(ctx, destination);
-					DocumentGenerator.createFile(ctx, 0);
+					DocumentGenerator.createElemFile(ctx, 0);
 					
-					//---test statistics
-					//ProofStatisticsExporter.generateStatistics((IProject)obj);
-//					IModelElement element = ModelController.getModelElement((IInternalElement)obj);
-//					ProofStatisticsExporter.generateStatistics(element);
-					//-------------
 				}
 			
 				
 			}else if (obj instanceof IProject) {
 				sourceElement = null;
-				IRodinProject rodinProject = RodinCore.valueOf((IProject) obj);
+				IProject proj = (IProject) obj;
+				IRodinProject rodinProject = RodinCore.valueOf(proj);
 				
 				String destination = createFolders(rodinProject.getProject());
-				
-				IFile file = DocumentGenerator.createProjectFile((IProject) obj);
-				String content = "";
-				//---test statistics
+				String content = DocumentGenerator.beginDocument();
+
+				//statistics
 				List <IModelElement> elements = new  ArrayList<IModelElement>();
-				
 				elements.add(ModelController.getModelElement(rodinProject));
-				
-//				IModelElement element = ModelController.getModelElement(rodinProject);
-//				
-//				ProofStatisticsExporter.generateStatistics(element);
-				//-------------
+
 				try {
 					    //begin document
 						for(IRodinElement child : rodinProject.getChildren()){
@@ -133,17 +113,14 @@ public class DocumentHandler extends AbstractHandler {
 								EventBElement eventBComponent = new EMFRodinDB().loadEventBComponent(((IRodinFile) child).getRoot());
 								if(eventBComponent instanceof Machine || eventBComponent instanceof Context){
 									DiagramExporter.exportDiagram(eventBComponent, destination);	
-									String name = DocumentGenerator.createFile(eventBComponent, 1);
-								    content += DocumentGenerator.includeFile(name);	 
+									String name = DocumentGenerator.createElemFile(eventBComponent, 1);
+								   
+									
+									content += DocumentGenerator.includeFile(name);	 
 								    
-								  //---test statistics
-									//ProofStatisticsExporter.generateStatistics((IProject)obj);
-//									IModelElement element2 = ModelController.getModelElement(((IRodinFile) child).getRoot());
-//								
-//									ProofStatisticsExporter.generateStatistics(element2);
-								    
+								    //statistics
 								    elements.add(ModelController.getModelElement(((IRodinFile) child).getRoot()));
-									//-------------
+									
 								  //add created file to the report
 								}//end if machine context
 									
@@ -152,22 +129,21 @@ public class DocumentHandler extends AbstractHandler {
 							
 						}//end for
 						
-						//test statistics---------
+						//statistics
 						String stat = ProofStatisticsExporter.generateStatistics(elements, rodinProject.getElementName());
 						//create proof statistics file
-						DocumentGenerator.createProofStatFile(stat, (IProject) obj);
+						String chContent = DocumentGenerator.beginChapter("Proof Statistics");
+						chContent += stat;
+						DocumentGenerator.generateFile("proofStatistics.tex", proj, chContent);
 						//include proof statistics
 						content += DocumentGenerator.includeFile("proofStatistics");
-						//------------------
-						
+			
 						//end document
-						content += DocumentGenerator.endDocument();
-						InputStream input = new StringInputStream(content);
-						try {
-							file.appendContents(input, IResource.FORCE, null);
-						} catch (CoreException e) {
-							throw new RuntimeException("Could not update file " +  file.getName(), e);
-						}
+						content += DocumentGenerator.endDocument();						
+						//generate project file
+						
+						String fileName = proj.getName() + ".tex";
+						DocumentGenerator.generateFile(fileName, proj , content);
 					} catch (RodinDBException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
