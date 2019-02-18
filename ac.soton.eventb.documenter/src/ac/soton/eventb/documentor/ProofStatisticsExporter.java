@@ -34,8 +34,8 @@ import org.eventb.core.IPSStatus;
  * Proof Statistics
  * </p>
  * @author dd4g12
- * @version 0.0.1
- * @since 0.0.1
+ * @version 1.0.0
+ * @since 1.0.0
  */
 
 public class ProofStatisticsExporter {

@@ -28,7 +28,7 @@ import org.eclipse.core.resources.IResource;
  * Latex document generator for iUML-B
  * </p>
  * @author dd4g12
- * @version 0.0.1
+ * @version 1.0.0
  * @since 0.0.1
  */
 public class DocumentGenerator {

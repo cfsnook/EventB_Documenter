@@ -52,7 +52,7 @@ import org.eclipse.core.resources.IFolder;
  * Handler for iUML-B document generator. Command can be executed from machine, context or project
  * </p>
  * @author dd4g12
- * @version 0.0.1
+ * @version 1.0.0
  * @since 0.0.1
  */
 public class DocumentHandler extends AbstractHandler {
