@@ -19,7 +19,6 @@ import org.eventb.emf.core.machine.Guard;
 import org.eventb.emf.core.machine.Invariant;
 import org.eventb.emf.core.machine.Machine;
 import org.eventb.emf.core.machine.Witness;
-
 import ac.soton.eventb.classdiagrams.Association;
 import ac.soton.eventb.classdiagrams.Class;
 import ac.soton.eventb.classdiagrams.ClassAttribute;

@@ -10,16 +10,13 @@
  *******************************************************************************/
 package ac.soton.eventb.documentor.handler;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.tools.ant.filters.StringInputStream;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.emf.ecore.EObject;
