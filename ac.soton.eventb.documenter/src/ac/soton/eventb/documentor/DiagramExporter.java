@@ -1,4 +1,14 @@
-package ac.soton.eventb.documenter;
+/*******************************************************************************
+ * Copyright (c) 2017-2018 University of Southampton.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     University of Southampton - initial API and implementation
+ *******************************************************************************/
+package ac.soton.eventb.documentor;
 
 import java.util.Map;
 import org.eclipse.core.resources.IFile;
@@ -26,7 +36,14 @@ import org.eventb.emf.core.context.Context;
 import org.eventb.emf.core.machine.Machine;
 import ac.soton.eventb.emf.diagrams.navigator.DiagramsNavigatorExtensionPlugin;
 import ac.soton.eventb.emf.diagrams.navigator.provider.IDiagramProvider;
-
+/**
+ * <p>
+ * Export diagrams in Event-B projects  e.g. iUML-B class diagrams, statemachines...
+ * </p>
+ * @author dd4g12
+ * @version 0.0.1
+ * @since 0.0.1
+ */
 public class DiagramExporter {
 	
 	/**
@@ -47,7 +64,7 @@ public class DiagramExporter {
 					//exportDiagram(ext, destination);
 					//-----------------------------------------------------------
 					EventBNamed e= (EventBNamed) ext;
-					diagramName = ((EventBNamed)element).getName() +"." + e.getName();
+					diagramName = ((EventBNamed)element).getName() +"_" + e.getName();
 					ac.soton.eventb.emf.diagrams.Diagram extDiagram = (ac.soton.eventb.emf.diagrams.Diagram) ext;
 				    org.eclipse.gmf.runtime.notation.Diagram diag = getDiagramToOpen(extDiagram);
 					if(diag != null){

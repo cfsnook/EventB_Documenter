@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
-Bundle-SymbolicName: ac.soton.eventb.documenter;singleton:=true
-Bundle-Version: 0.0.1.qualifier
+Bundle-SymbolicName: ac.soton.eventb.documentor;singleton:=true
+Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.ui;bundle-version="3.108.1",
  org.rodinp.core;bundle-version="1.7.0",
@@ -11,8 +11,13 @@ Require-Bundle: org.eclipse.ui;bundle-version="3.108.1",
  org.eclipse.gmf.runtime.diagram.ui.render;bundle-version="1.7.0",
  org.eventb.emf.persistence;bundle-version="3.5.0",
  org.eclipse.gmf.runtime.diagram.ui;bundle-version="1.8.0",
- org.eventb.emf.core;bundle-version="4.2.1",
+ org.eventb.emf.core;bundle-version="5.0.0",
  org.eventb.core;bundle-version="3.3.0",
  ac.soton.eventb.emf.diagrams.navigator;bundle-version="3.0.0",
- org.apache.ant;bundle-version="1.9.6"
+ org.apache.ant;bundle-version="1.9.6",
+ ac.soton.eventb.classdiagrams;bundle-version="1.0.0",
+ ac.soton.eventb.statemachines;bundle-version="3.2.0",
+ ac.soton.eventb.emf.core.extension,
+ fr.systerel.explorer;bundle-version="2.1.1"
 Bundle-Vendor: %Bundle-Vendor
+Automatic-Module-Name: ac.soton.eventb.documentor
