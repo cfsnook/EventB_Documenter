@@ -10,24 +10,11 @@
  *******************************************************************************/
 package ac.soton.eventb.documentor;
 
-import org.eventb.emf.core.EventBElement;
 
-import ac.soton.eventb.classdiagrams.Association;
-import ac.soton.eventb.classdiagrams.Class;
-import ac.soton.eventb.classdiagrams.ClassAttribute;
-import ac.soton.eventb.classdiagrams.ClassConstraint;
-import ac.soton.eventb.classdiagrams.ClassMethod;
-import ac.soton.eventb.classdiagrams.Classdiagram;
 import fr.systerel.internal.explorer.statistics.Statistics;
-import fr.systerel.internal.explorer.statistics.StatisticsUtil;
-import fr.systerel.explorer.ExplorerPlugin;
 import fr.systerel.internal.explorer.model.IModelElement;
 import fr.systerel.internal.explorer.statistics.IStatistics;
-
 import java.util.List;
-
-import org.eventb.core.IPOSequent;
-import org.eventb.core.IPSStatus;
 
 /**
  * <p>

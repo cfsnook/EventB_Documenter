@@ -12,7 +12,6 @@
 package ac.soton.eventb.documentor;
 
 import java.io.InputStream;
-
 import org.apache.tools.ant.filters.StringInputStream;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
