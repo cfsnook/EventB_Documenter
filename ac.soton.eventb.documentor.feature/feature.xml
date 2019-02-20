@@ -42,7 +42,13 @@
          id="ac.soton.eventb.documentor"
          download-size="0"
          install-size="0"
-         version="1.0.0.qualifier"
+         version="0.0.0"
          unpack="false"/>
+         
+   <plugin 
+   		id="ac.soton.eventb.documentor.branding" 
+        download-size="0" 
+        install-size="0" 
+        version="0.0.0"/>      
 
 </feature>
