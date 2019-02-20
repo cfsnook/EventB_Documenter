@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
    <feature url="features/ac.soton.eventb.documentor.feature_1.0.0.201902201148.jar" id="ac.soton.eventb.documentor.feature" version="1.0.0.201902201148"/>
+   <feature url="features/ac.soton.eventb.documentor.feature_1.0.0.qualifier.jar" id="ac.soton.eventb.documentor.feature" version="1.0.0.qualifier"/>
+   <feature url="features/ac.soton.eventb.documentor.sdk_1.0.0.201902201240.jar" id="ac.soton.eventb.documentor.sdk" version="1.0.0.201902201240"/>
 </site>
