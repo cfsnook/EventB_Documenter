@@ -3,29 +3,29 @@
       id="ac.soton.eventb.documentor.sdk"
       label="%featureName"
       version="1.0.0.qualifier"
-      provider-name="%featureVendor">
+      provider-name="%featureVendor"
+      plugin="ac.soton.eventb.documentor.branding"
+      license-feature="org.rodinp.license"
+      license-feature-version="1.0.0.release">
 
-   <description url="http://www.example.com/description">
-      [Enter Feature Description here.]
+   <description>
+      %featureDescription
    </description>
 
-   <copyright url="http://www.example.com/copyright">
-      [Enter Copyright Description here.]
+   <copyright>
+      %featureCopyright
    </copyright>
-
-   <license url="http://www.example.com/license">
-      [Enter License Description here.]
-   </license>
 
    <url>
       <update label="%updateSiteName" url="http://rodin-b-sharp.sourceforge.net/updates"/>
    </url>
 
-   <plugin
-         id="ac.soton.eventb.documentor"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+   <includes
+         id="ac.soton.eventb.documentor.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="ac.soton.eventb.documentor.source.feature"
+         version="0.0.0"/>
 
 </feature>
