@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="ac.soton.eventb.documentor.feature"
+      label="%featureName"
+      version="1.0.0.qualifier"
+      provider-name="%featureVendor"
+      plugin="ac.soton.eventb.documentor.branding"
+      license-feature="org.rodinp.license"
+      license-feature-version="1.0.0.release">
+
+   <description>
+      %featureDescription
+   </description>
+
+   <copyright>
+      %featureCopyright
+   </copyright>
+
+   <url>
+      <update label="%updateSiteName" url="http://rodin-b-sharp.sourceforge.net/updates"/>
+   </url>
+
+   <requires>
+      <import plugin="org.eclipse.ui" version="3.108.1" match="compatible"/>
+      <import plugin="org.rodinp.core" version="1.7.0" match="compatible"/>
+      <import plugin="org.eclipse.core.resources" version="3.11.1" match="compatible"/>
+      <import plugin="ac.soton.eventb.emf.diagrams" version="4.0.2" match="compatible"/>
+      <import plugin="org.eclipse.gmf.runtime.diagram.ui.render" version="1.7.0" match="compatible"/>
+      <import plugin="org.eventb.emf.persistence" version="3.5.0" match="compatible"/>
+      <import plugin="org.eclipse.gmf.runtime.diagram.ui" version="1.8.0" match="compatible"/>
+      <import plugin="org.eventb.emf.core" version="5.0.0" match="compatible"/>
+      <import plugin="org.eventb.core" version="3.3.0" match="compatible"/>
+      <import plugin="ac.soton.eventb.emf.diagrams.navigator" version="3.0.0" match="compatible"/>
+      <import plugin="org.apache.ant" version="1.9.6" match="compatible"/>
+      <import plugin="ac.soton.eventb.emf.core.extension" version="5.0.0" match="compatible"/>
+      <import plugin="fr.systerel.explorer" version="2.1.1" match="compatible"/>
+      <import plugin="ac.soton.eventb.classdiagrams" version="2.0.0" match="compatible"/>
+      <import plugin="ac.soton.eventb.statemachines" version="4.0.0" match="compatible"/>
+   </requires>
+
+   <plugin
+         id="ac.soton.eventb.documentor"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+         
+   <plugin 
+   		id="ac.soton.eventb.documentor.branding" 
+        download-size="0" 
+        install-size="0" 
+        version="0.0.0"/>      
+
+</feature>
