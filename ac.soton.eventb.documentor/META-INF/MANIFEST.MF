@@ -2,12 +2,12 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: ac.soton.eventb.documentor;singleton:=true
-Bundle-Version: 1.0.0.release
+Bundle-Version: 1.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.ui;bundle-version="[3.108.1,4.0.0)",
  org.rodinp.core;bundle-version="[1.7.0,2.0.0)",
  org.eclipse.core.resources;bundle-version="[3.11.1,4.0.0)",
- ac.soton.eventb.emf.diagrams;bundle-version="[4.0.2,5.0.0)",
+ ac.soton.eventb.emf.diagrams;bundle-version="[5.0.0,6.0.0)",
  org.eclipse.gmf.runtime.diagram.ui.render;bundle-version="[1.7.0,2.0.0)",
  org.eventb.emf.persistence;bundle-version="[3.5.0,4.0.0)",
  org.eclipse.gmf.runtime.diagram.ui;bundle-version="[1.8.0,2.0.0)",
